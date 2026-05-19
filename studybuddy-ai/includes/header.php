@@ -39,7 +39,7 @@ $pageTitle = $pageTitle ?? 'StudyBuddy AI';
             <header class="topbar">
                 <button class="menu-toggle" type="button" id="menuToggle" aria-label="Buka menu">&#9776;</button>
                 <div>
-                    <span class="eyebrow">Vibe Coding Campus</span>
+                    <span class="eyebrow">OYIIBIEL.studio</span>
                     <h1><?= e($pageTitle); ?></h1>
                 </div>
             </header>
