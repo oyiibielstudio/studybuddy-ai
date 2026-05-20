@@ -485,6 +485,10 @@ body.is-loaded .showcase-lane {
     opacity: 0.72;
 }
 
+.is-pressing {
+    animation: pressPop 0.28s var(--ease);
+}
+
 .text-link {
     display: inline-flex;
     margin-top: 8px;
@@ -895,7 +899,65 @@ body.is-loaded .showcase-lane {
     box-shadow: 0 20px 48px rgba(2, 48, 71, 0.12);
 }
 
+.buddy-hero {
+    width: 100%;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    color: inherit;
+    cursor: pointer;
+    appearance: none;
+    isolation: isolate;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    animation: buddyFloat 4.2s var(--ease) infinite;
+}
+
+.buddy-hero::before,
+.buddy-hero::after {
+    content: "";
+    position: absolute;
+    inset: auto;
+    z-index: -1;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.buddy-hero::before {
+    width: 210px;
+    height: 210px;
+    background: radial-gradient(circle, rgba(142, 202, 230, 0.46), transparent 68%);
+    animation: buddyAura 3s var(--ease) infinite;
+}
+
+.buddy-hero::after {
+    width: 76px;
+    height: 76px;
+    right: 28px;
+    top: 28px;
+    background: rgba(255, 183, 3, 0.22);
+    clip-path: polygon(50% 0, 62% 36%, 100% 50%, 62% 64%, 50% 100%, 38% 64%, 0 50%, 38% 36%);
+    animation: twinkleSpin 5s linear infinite;
+}
+
+.buddy-hero:hover {
+    box-shadow: 0 26px 62px rgba(2, 48, 71, 0.18);
+}
+
+.buddy-hero:hover .buddy-head {
+    transform: translateY(-8px) rotate(-2deg);
+}
+
+.buddy-hero:hover .buddy-book {
+    transform: translateY(-2px) rotate(1deg);
+}
+
+.buddy-hero:focus-visible {
+    outline: 4px solid rgba(255, 183, 3, 0.55);
+    outline-offset: 4px;
+}
+
 .buddy-head {
+    position: relative;
     display: flex;
     gap: 22px;
     align-items: center;
@@ -905,15 +967,74 @@ body.is-loaded .showcase-lane {
     border-radius: 34px;
     background: var(--navy);
     box-shadow: inset 0 -8px 0 rgba(142, 202, 230, 0.18);
+    transition: transform 0.22s var(--ease), border-radius 0.22s var(--ease);
+    animation: buddyHeadBob 3.4s var(--ease) infinite;
 }
 
-.buddy-head span {
+.buddy-head::before,
+.buddy-head::after {
+    content: "";
+    position: absolute;
+    top: 46px;
+    width: 14px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(251, 133, 0, 0.42);
+    filter: blur(0.2px);
+}
+
+.buddy-head::before {
+    left: 21px;
+}
+
+.buddy-head::after {
+    right: 21px;
+}
+
+.buddy-eye {
     width: 18px;
     height: 18px;
     border-radius: 50%;
     background: var(--yellow);
     box-shadow: 0 0 18px rgba(255, 183, 3, 0.72);
     animation: blinkGlow 2.8s infinite;
+}
+
+.buddy-mouth {
+    position: absolute;
+    left: 50%;
+    bottom: 23px;
+    width: 34px;
+    height: 16px;
+    border: 3px solid var(--sky);
+    border-top: 0;
+    border-radius: 0 0 24px 24px;
+    transform: translateX(-50%);
+    opacity: 0.95;
+}
+
+.buddy-antenna {
+    position: absolute;
+    top: 35px;
+    width: 4px;
+    height: 36px;
+    border-radius: 999px;
+    background: var(--navy);
+    transform-origin: bottom;
+    animation: antennaWiggle 1.7s var(--ease) infinite;
+}
+
+.buddy-antenna::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -14px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: 0 0 18px rgba(251, 133, 0, 0.68);
+    transform: translateX(-50%);
 }
 
 .buddy-book {
@@ -929,6 +1050,8 @@ body.is-loaded .showcase-lane {
     color: #ffffff;
     font-weight: 950;
     box-shadow: 0 12px 28px rgba(33, 158, 188, 0.28);
+    transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease);
+    animation: bookPulse 2.6s var(--ease) infinite;
 }
 
 .buddy-book span:last-child {
@@ -937,11 +1060,316 @@ body.is-loaded .showcase-lane {
 
 .buddy-sparkle {
     position: absolute;
-    top: 32px;
-    right: 46px;
     color: var(--orange);
     font-size: 2rem;
+    pointer-events: none;
+}
+
+.sparkle-one {
+    top: 32px;
+    right: 46px;
     animation: floaty 2.6s var(--ease) infinite;
+}
+
+.sparkle-two {
+    left: 42px;
+    bottom: 54px;
+    color: var(--yellow);
+    font-size: 1.25rem;
+    animation: sparklePop 2.2s var(--ease) infinite;
+}
+
+.buddy-orbit {
+    position: absolute;
+    border: 1px dashed rgba(33, 158, 188, 0.28);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.buddy-orbit::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: 0 0 14px rgba(251, 133, 0, 0.54);
+}
+
+.orbit-one {
+    width: 224px;
+    height: 224px;
+    animation: orbitSpin 8s linear infinite;
+}
+
+.orbit-one::before {
+    left: 28px;
+    top: 18px;
+}
+
+.orbit-two {
+    width: 176px;
+    height: 176px;
+    animation: orbitSpin 5.6s linear infinite reverse;
+}
+
+.orbit-two::before {
+    right: 20px;
+    bottom: 24px;
+    background: var(--yellow);
+}
+
+.buddy-shadow {
+    position: absolute;
+    bottom: 34px;
+    width: 128px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(2, 48, 71, 0.16);
+    filter: blur(3px);
+    animation: shadowPulse 4.2s var(--ease) infinite;
+}
+
+.buddy-reaction {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.buddy-reaction span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 50%;
+    background: #ffffff;
+    color: var(--orange);
+    box-shadow: 0 12px 24px rgba(2, 48, 71, 0.16);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+}
+
+.buddy-hero.is-excited {
+    animation: buddyExcited 0.68s var(--ease), buddyFloat 4.2s var(--ease) 0.68s infinite;
+}
+
+.buddy-hero.is-excited .buddy-head {
+    border-radius: 28px 40px 30px 42px;
+    animation: robotDance 0.68s var(--ease);
+}
+
+.buddy-hero.is-excited .buddy-eye {
+    border-radius: 8px;
+    transform: rotate(45deg);
+}
+
+.buddy-hero.is-excited .buddy-mouth {
+    height: 19px;
+    border-color: var(--yellow);
+}
+
+.buddy-hero.is-excited .buddy-book {
+    animation: bookFlip 0.68s var(--ease);
+    box-shadow: 0 20px 36px rgba(251, 133, 0, 0.28);
+}
+
+.buddy-hero.is-excited .buddy-reaction span {
+    animation: reactionBurst 0.86s var(--ease) both;
+}
+
+.buddy-hero.is-excited .buddy-reaction span:nth-child(1) {
+    --burst-x: -92px;
+    --burst-y: -98px;
+}
+
+.buddy-hero.is-excited .buddy-reaction span:nth-child(2) {
+    --burst-x: 86px;
+    --burst-y: -74px;
+    animation-delay: 0.05s;
+}
+
+.buddy-hero.is-excited .buddy-reaction span:nth-child(3) {
+    --burst-x: -72px;
+    --burst-y: 74px;
+    animation-delay: 0.1s;
+}
+
+.buddy-hero.is-excited .buddy-reaction span:nth-child(4) {
+    --burst-x: 94px;
+    --burst-y: 70px;
+    animation-delay: 0.15s;
+}
+
+.buddy-hero[data-emotion="joy"] .buddy-head {
+    background: #023047;
+}
+
+.buddy-hero[data-emotion="joy"] .buddy-eye {
+    background: var(--yellow);
+}
+
+.buddy-hero[data-emotion="anger"] .buddy-head {
+    background: linear-gradient(135deg, var(--navy), var(--orange));
+    animation: angerShake 0.24s linear infinite;
+}
+
+.buddy-hero[data-emotion="anger"] .buddy-eye {
+    width: 24px;
+    height: 8px;
+    border-radius: 999px;
+    transform: rotate(-14deg);
+    background: var(--orange);
+}
+
+.buddy-hero[data-emotion="anger"] .buddy-eye:nth-child(2) {
+    transform: rotate(14deg);
+}
+
+.buddy-hero[data-emotion="anger"] .buddy-mouth {
+    width: 30px;
+    height: 4px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--yellow);
+    bottom: 24px;
+}
+
+.buddy-hero[data-emotion="fear"] .buddy-head {
+    background: linear-gradient(135deg, #023047, #219EBC);
+}
+
+.buddy-hero[data-emotion="fear"] .buddy-eye {
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 7px var(--yellow), 0 0 18px rgba(255, 183, 3, 0.66);
+}
+
+.buddy-hero[data-emotion="fear"] .buddy-mouth {
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--sky);
+    border-radius: 50%;
+    bottom: 20px;
+}
+
+.buddy-hero[data-emotion="disgust"] .buddy-head {
+    background: linear-gradient(135deg, var(--navy), var(--teal));
+    transform: rotate(-3deg);
+}
+
+.buddy-hero[data-emotion="disgust"] .buddy-eye {
+    width: 22px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--sky);
+}
+
+.buddy-hero[data-emotion="disgust"] .buddy-mouth {
+    width: 32px;
+    height: 13px;
+    border: 3px solid var(--yellow);
+    border-bottom: 0;
+    border-radius: 24px 24px 0 0;
+    bottom: 18px;
+}
+
+.buddy-hero[data-emotion="sadness"] {
+    animation-duration: 5.8s;
+}
+
+.buddy-hero[data-emotion="sadness"] .buddy-head {
+    background: linear-gradient(135deg, var(--navy), rgba(33, 158, 188, 0.72));
+}
+
+.buddy-hero[data-emotion="sadness"] .buddy-eye {
+    height: 14px;
+    border-radius: 50% 50% 999px 999px;
+    background: var(--sky);
+}
+
+.buddy-hero[data-emotion="sadness"] .buddy-mouth {
+    width: 32px;
+    height: 13px;
+    border: 3px solid var(--sky);
+    border-bottom: 0;
+    border-radius: 24px 24px 0 0;
+    bottom: 17px;
+}
+
+.buddy-hero[data-emotion="envy"] .buddy-eye {
+    background: var(--teal);
+    box-shadow: 0 0 18px rgba(33, 158, 188, 0.75);
+}
+
+.buddy-hero[data-emotion="envy"] .buddy-book {
+    background: linear-gradient(135deg, var(--teal), var(--yellow));
+}
+
+.buddy-hero[data-emotion="embarrassment"] .buddy-head::before,
+.buddy-hero[data-emotion="embarrassment"] .buddy-head::after {
+    width: 22px;
+    height: 13px;
+    background: rgba(251, 133, 0, 0.64);
+}
+
+.buddy-hero[data-emotion="embarrassment"] .buddy-eye {
+    width: 12px;
+    height: 12px;
+}
+
+.buddy-hero[data-emotion="embarrassment"] .buddy-mouth {
+    width: 18px;
+    height: 8px;
+    border-radius: 999px;
+    border: 0;
+    background: var(--sky);
+    bottom: 24px;
+}
+
+.buddy-hero[data-emotion="anxiety"] .buddy-head {
+    animation: anxietyBuzz 0.18s linear infinite;
+}
+
+.buddy-hero[data-emotion="anxiety"] .buddy-eye {
+    width: 14px;
+    height: 24px;
+    border-radius: 999px;
+}
+
+.buddy-hero[data-emotion="anxiety"] .buddy-mouth {
+    width: 26px;
+    height: 12px;
+    border: 3px dashed var(--yellow);
+    border-top: 0;
+}
+
+.buddy-hero[data-emotion="ennui"] {
+    filter: saturate(0.82);
+}
+
+.buddy-hero[data-emotion="ennui"] .buddy-head {
+    border-radius: 40px;
+    background: rgba(2, 48, 71, 0.88);
+}
+
+.buddy-hero[data-emotion="ennui"] .buddy-eye {
+    width: 25px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--sky);
+}
+
+.buddy-hero[data-emotion="ennui"] .buddy-mouth {
+    width: 28px;
+    height: 4px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(142, 202, 230, 0.8);
+    bottom: 24px;
 }
 
 .dashboard-grid {
@@ -949,10 +1377,46 @@ body.is-loaded .showcase-lane {
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
     gap: 24px;
     align-items: stretch;
+    grid-auto-flow: dense;
 }
 
 .focus-card {
     grid-row: span 2;
+}
+
+.buddy-vibe-card {
+    background:
+        linear-gradient(135deg, rgba(142, 202, 230, 0.2), rgba(255, 183, 3, 0.11)),
+        #ffffff;
+}
+
+.emotion-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.emotion-grid span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 6px 10px;
+    border: 1px solid rgba(33, 158, 188, 0.18);
+    border-radius: 999px;
+    background: rgba(142, 202, 230, 0.18);
+    color: var(--navy);
+    font-size: 0.78rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform 0.18s var(--ease), background 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+
+.emotion-grid span:hover,
+.emotion-grid span.active {
+    transform: translateY(-2px);
+    border-color: rgba(251, 133, 0, 0.36);
+    background: var(--yellow);
 }
 
 .timer-shell {
@@ -1519,6 +1983,236 @@ body.is-loaded .showcase-lane {
 
     50% {
         transform: translateY(-8px) rotate(8deg);
+    }
+}
+
+@keyframes buddyFloat {
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-6px) rotate(-0.7deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(0.6deg);
+    }
+
+    75% {
+        transform: translateY(-5px) rotate(0.4deg);
+    }
+}
+
+@keyframes buddyAura {
+    0%,
+    100% {
+        transform: scale(0.92);
+        opacity: 0.55;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 0.95;
+    }
+}
+
+@keyframes buddyHeadBob {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes antennaWiggle {
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    35% {
+        transform: rotate(-8deg);
+    }
+
+    70% {
+        transform: rotate(7deg);
+    }
+}
+
+@keyframes bookPulse {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-3px) scale(1.02);
+    }
+}
+
+@keyframes sparklePop {
+    0%,
+    100% {
+        transform: scale(0.75) rotate(0deg);
+        opacity: 0.55;
+    }
+
+    50% {
+        transform: scale(1.15) rotate(18deg);
+        opacity: 1;
+    }
+}
+
+@keyframes orbitSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shadowPulse {
+    0%,
+    100% {
+        transform: scaleX(0.9);
+        opacity: 0.38;
+    }
+
+    50% {
+        transform: scaleX(1.16);
+        opacity: 0.22;
+    }
+}
+
+@keyframes twinkleSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes buddyExcited {
+    0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+
+    24% {
+        transform: translateY(-18px) scale(1.04) rotate(-3deg);
+    }
+
+    48% {
+        transform: translateY(4px) scale(0.98) rotate(3deg);
+    }
+
+    72% {
+        transform: translateY(-10px) scale(1.03) rotate(-2deg);
+    }
+
+    100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+}
+
+@keyframes robotDance {
+    0%,
+    100% {
+        transform: translateY(-4px) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-14px) rotate(-8deg);
+    }
+
+    50% {
+        transform: translateY(-6px) rotate(8deg);
+    }
+
+    75% {
+        transform: translateY(-12px) rotate(-5deg);
+    }
+}
+
+@keyframes angerShake {
+    0%,
+    100% {
+        transform: translateX(0) rotate(0deg);
+    }
+
+    33% {
+        transform: translateX(-2px) rotate(-1deg);
+    }
+
+    66% {
+        transform: translateX(2px) rotate(1deg);
+    }
+}
+
+@keyframes anxietyBuzz {
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-1px, 1px);
+    }
+
+    50% {
+        transform: translate(1px, -1px);
+    }
+
+    75% {
+        transform: translate(-1px, -1px);
+    }
+}
+
+@keyframes bookFlip {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+
+    40% {
+        transform: translateY(-10px) rotate(-5deg) scale(1.06);
+    }
+
+    70% {
+        transform: translateY(-4px) rotate(5deg) scale(1.03);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+}
+
+@keyframes reactionBurst {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--burst-x)), calc(-50% + var(--burst-y))) scale(1.3) rotate(26deg);
+    }
+}
+
+@keyframes pressPop {
+    0% {
+        transform: scale(1);
+    }
+
+    42% {
+        transform: scale(0.96);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }
 

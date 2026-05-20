@@ -4,7 +4,7 @@ StudyBuddy AI adalah aplikasi web PHP Native untuk membantu mahasiswa mengatur t
 
 ## Fitur Utama
 
-- Dashboard ringkasan tugas, mood terakhir, jadwal terbaru, dan motivasi harian.
+- Study Space ringkasan tugas, mood terakhir, jadwal terbaru, dan motivasi harian.
 - To-do list dengan deadline, status belum/selesai, dan hapus tugas.
 - Mood Tracker dengan emoji, catatan singkat, riwayat mood, dan motivasi sederhana.
 - Smart Study Plan Generator rule-based untuk membuat rencana belajar dari tugas, deadline, dan kondisi energi.

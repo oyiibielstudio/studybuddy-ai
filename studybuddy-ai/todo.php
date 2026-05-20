@@ -115,7 +115,7 @@ require_once __DIR__ . '/includes/header.php';
         <div class="mini-progress" aria-label="Progress tugas">
             <span style="width: <?= $todoProgress; ?>%;"></span>
         </div>
-        <p class="muted progress-copy"><?= $doneCount; ?> done, <?= count($todos) - $doneCount; ?> tasks left today</p>
+        <p class="muted progress-copy"><?= $doneCount; ?> selesai dari <?= count($todos); ?> tugas</p>
 
         <?php if (!$todos): ?>
             <div class="empty-state">

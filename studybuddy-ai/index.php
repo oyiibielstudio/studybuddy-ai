@@ -2,7 +2,7 @@
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/helpers.php';
 
-$pageTitle = 'Dashboard';
+$pageTitle = 'Study Space';
 
 $totalTodos = (int) $pdo->query('SELECT COUNT(*) FROM todos')->fetchColumn();
 $pendingTodos = (int) $pdo->query("SELECT COUNT(*) FROM todos WHERE status = 'belum'")->fetchColumn();
@@ -32,19 +32,29 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     </div>
 
-    <div class="buddy-hero" aria-hidden="true">
-        <div class="buddy-sparkle">&#10022;</div>
-        <div class="hero-sticker sticker-top">no panic mode</div>
+    <button class="buddy-hero" id="buddyHero" type="button" data-emotion="joy" aria-label="Klik StudyBuddy untuk animasi emosi">
+        <div class="buddy-orbit orbit-one"></div>
+        <div class="buddy-orbit orbit-two"></div>
+        <div class="buddy-sparkle sparkle-one">&#10022;</div>
+        <div class="buddy-sparkle sparkle-two">&#10022;</div>
+        <div class="buddy-antenna"></div>
         <div class="buddy-head">
-            <span></span>
-            <span></span>
+            <span class="buddy-eye"></span>
+            <span class="buddy-eye"></span>
+            <div class="buddy-mouth"></div>
         </div>
         <div class="buddy-book">
             <span>AI</span>
             <span>Study</span>
         </div>
-        <div class="hero-sticker sticker-bottom"><?= $pendingTodos; ?> tasks left</div>
-    </div>
+        <div class="buddy-shadow"></div>
+        <div class="buddy-reaction" aria-hidden="true">
+            <span>&#10022;</span>
+            <span>&#9889;</span>
+            <span>&#10003;</span>
+            <span>&#10022;</span>
+        </div>
+    </button>
 </section>
 
 <section class="studio-strip" aria-label="Alur belajar StudyBuddy">
@@ -77,7 +87,7 @@ require_once __DIR__ . '/includes/header.php';
         <div class="progress-ring" style="--progress: <?= $progress; ?>%;">
             <strong><?= $progress; ?>%</strong>
         </div>
-        <small><?= $doneTodos; ?> done, <?= $pendingTodos; ?> tasks left today</small>
+        <small><?= $doneTodos; ?> selesai dari <?= $totalTodos; ?> tugas</small>
     </article>
 
     <article class="stat-card">
@@ -162,6 +172,28 @@ require_once __DIR__ . '/includes/header.php';
             <a class="text-link" href="schedule.php">Buat study plan manual</a>
         <?php endif; ?>
     </article>
+
+    <article class="card buddy-vibe-card">
+        <div class="section-heading compact">
+            <div>
+                <span class="eyebrow">Buddy drift</span>
+                <h2>Robot mood lagi jalan</h2>
+            </div>
+            <span class="badge" id="buddyEmotionBadge">joy</span>
+        </div>
+        <p id="buddyEmotionCopy">StudyBuddy lagi happy: siap nemenin kamu mulai pelan-pelan.</p>
+        <div class="emotion-grid" aria-label="Daftar emosi StudyBuddy">
+            <span data-emotion-chip="joy">joy</span>
+            <span data-emotion-chip="anger">anger</span>
+            <span data-emotion-chip="fear">fear</span>
+            <span data-emotion-chip="disgust">disgust</span>
+            <span data-emotion-chip="sadness">sadness</span>
+            <span data-emotion-chip="envy">envy</span>
+            <span data-emotion-chip="embarrassment">embarrassment</span>
+            <span data-emotion-chip="anxiety">anxiety</span>
+            <span data-emotion-chip="ennui">ennui</span>
+        </div>
+    </article>
 </section>
 
 <section class="feature-showcase">
@@ -183,7 +215,7 @@ require_once __DIR__ . '/includes/header.php';
         </a>
         <a href="#focusTimer" class="showcase-lane lane-focus">
             <span>&#9201;</span>
-            <strong>Focus mode</strong>
+            <strong>Focus flow</strong>
             <small>25 menit cukup buat tiny win hari ini.</small>
         </a>
     </div>

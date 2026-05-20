@@ -11,10 +11,10 @@ $pageTitle = $pageTitle ?? 'StudyBuddy AI';
     <title><?= e($pageTitle); ?> - StudyBuddy AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="page-<?= e(str_replace('.php', '', currentPage())); ?>">
+<body>
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
-            <a class="brand" href="index.php" aria-label="StudyBuddy AI Dashboard">
+            <a class="brand" href="index.php" aria-label="StudyBuddy AI Study Space">
                 <span class="brand-logo" aria-hidden="true">
                     <span class="logo-chat">SB</span>
                     <span class="logo-check">&#10003;</span>
@@ -26,7 +26,7 @@ $pageTitle = $pageTitle ?? 'StudyBuddy AI';
             </a>
 
             <nav class="nav-menu" aria-label="Menu utama">
-                <a class="<?= isActive('index.php'); ?>" href="index.php"><span class="nav-icon" aria-hidden="true">&#8962;</span><span>Dashboard</span></a>
+                <a class="<?= isActive('index.php'); ?>" href="index.php"><span class="nav-icon" aria-hidden="true">&#8962;</span><span>Study Space</span></a>
                 <a class="<?= isActive('todo.php'); ?>" href="todo.php"><span class="nav-icon" aria-hidden="true">&#10003;</span><span>To-do</span></a>
                 <a class="<?= isActive('mood.php'); ?>" href="mood.php"><span class="nav-icon" aria-hidden="true">&#9728;</span><span>Mood Tracker</span></a>
                 <a class="<?= isActive('study-plan.php'); ?>" href="study-plan.php"><span class="nav-icon" aria-hidden="true">&#9889;</span><span>Study Plan</span></a>
@@ -42,7 +42,6 @@ $pageTitle = $pageTitle ?? 'StudyBuddy AI';
                     <span class="eyebrow">OYIIBIEL.studio</span>
                     <h1><?= e($pageTitle); ?></h1>
                 </div>
-                <span class="topbar-chip">Local AI mode</span>
             </header>
 
             <main class="main-content">

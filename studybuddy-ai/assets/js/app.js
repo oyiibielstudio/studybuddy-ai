@@ -42,6 +42,109 @@ document.querySelectorAll('[data-fill-message]').forEach((chip) => {
     });
 });
 
+const buddyHero = document.querySelector('#buddyHero');
+const buddyEmotionBadge = document.querySelector('#buddyEmotionBadge');
+const buddyEmotionCopy = document.querySelector('#buddyEmotionCopy');
+const emotionChips = document.querySelectorAll('[data-emotion-chip]');
+const buddyEmotions = [
+    {
+        name: 'joy',
+        copy: 'StudyBuddy lagi happy: siap nemenin kamu mulai pelan-pelan.',
+    },
+    {
+        name: 'anger',
+        copy: 'Anger vibe: bukan marah ke kamu, dia lagi galak sama deadline yang suka nyerobot tenangmu.',
+    },
+    {
+        name: 'fear',
+        copy: 'Fear vibe: dia juga kadang deg-degan, jadi kita kecilkan langkahnya biar aman.',
+    },
+    {
+        name: 'disgust',
+        copy: 'Disgust vibe: dia ilfeel sama tugas yang numpuk, tapi tetap bantu pilah satu-satu.',
+    },
+    {
+        name: 'sadness',
+        copy: 'Sadness vibe: pelan dulu. Hari berat tetap boleh punya progress kecil.',
+    },
+    {
+        name: 'envy',
+        copy: 'Envy vibe: iri dikit sama orang yang sudah selesai, lalu balik fokus ke ritme sendiri.',
+    },
+    {
+        name: 'embarrassment',
+        copy: 'Embarrassment vibe: malu-malu tapi tetap muncul buat nemenin kamu mulai lagi.',
+    },
+    {
+        name: 'anxiety',
+        copy: 'Anxiety vibe: napas dulu, satu tab saja, satu langkah saja.',
+    },
+    {
+        name: 'ennui',
+        copy: 'Ennui vibe: lagi flat, jadi targetnya dibuat super ringan biar tetap nyaman.',
+    },
+];
+let buddyEmotionIndex = 0;
+
+const setBuddyEmotion = (emotionName, burst = false) => {
+    if (!buddyHero) {
+        return;
+    }
+
+    const emotion = buddyEmotions.find((item) => item.name === emotionName) || buddyEmotions[0];
+    buddyHero.dataset.emotion = emotion.name;
+
+    if (buddyEmotionBadge) {
+        buddyEmotionBadge.textContent = emotion.name;
+    }
+
+    if (buddyEmotionCopy) {
+        buddyEmotionCopy.textContent = emotion.copy;
+    }
+
+    emotionChips.forEach((chip) => {
+        chip.classList.toggle('active', chip.dataset.emotionChip === emotion.name);
+    });
+
+    if (burst) {
+        buddyHero.classList.remove('is-excited');
+        void buddyHero.offsetWidth;
+        buddyHero.classList.add('is-excited');
+
+        window.setTimeout(() => {
+            buddyHero.classList.remove('is-excited');
+        }, 980);
+    }
+};
+
+if (buddyHero) {
+    setBuddyEmotion('joy');
+
+    buddyHero.addEventListener('click', () => {
+        buddyEmotionIndex = (buddyEmotionIndex + 1) % buddyEmotions.length;
+        setBuddyEmotion(buddyEmotions[buddyEmotionIndex].name, true);
+    });
+
+    window.setInterval(() => {
+        if (document.hidden) {
+            return;
+        }
+
+        buddyEmotionIndex = (buddyEmotionIndex + 1) % buddyEmotions.length;
+        setBuddyEmotion(buddyEmotions[buddyEmotionIndex].name, false);
+    }, 5200);
+}
+
+emotionChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+        const emotionName = chip.dataset.emotionChip || 'joy';
+        const nextIndex = buddyEmotions.findIndex((item) => item.name === emotionName);
+
+        buddyEmotionIndex = nextIndex >= 0 ? nextIndex : 0;
+        setBuddyEmotion(emotionName, true);
+    });
+});
+
 const timerDisplay = document.querySelector('#timerDisplay');
 const timerRing = document.querySelector('#timerRing');
 const timerMode = document.querySelector('#timerMode');
@@ -148,6 +251,18 @@ document.querySelectorAll('a[href$=".php"]').forEach((link) => {
         window.setTimeout(() => {
             window.location.href = link.href;
         }, 160);
+    });
+});
+
+document.querySelectorAll('.button, .shortcut-card, .showcase-lane').forEach((element) => {
+    element.addEventListener('pointerdown', () => {
+        element.classList.remove('is-pressing');
+        void element.offsetWidth;
+        element.classList.add('is-pressing');
+    });
+
+    element.addEventListener('animationend', () => {
+        element.classList.remove('is-pressing');
     });
 });
 
