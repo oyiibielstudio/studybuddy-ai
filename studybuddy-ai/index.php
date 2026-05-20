@@ -19,8 +19,13 @@ require_once __DIR__ . '/includes/header.php';
 <section class="dashboard-hero">
     <div class="hero-copy">
         <span class="eyebrow">Your cozy AI study companion</span>
-        <h2>Hi, ready to study today?</h2>
-        <p>StudyBuddy AI bantu kamu mengatur tugas, mood, jadwal belajar, dan motivasi dalam satu ruang belajar digital yang ringan.</p>
+        <h2>Hi, mau belajar tanpa kerasa dikejar-kejar?</h2>
+        <p>StudyBuddy AI bikin ruang belajar digital yang lebih manusiawi: tugas rapi, mood tetap didengar, fokus jalan pelan, dan rencana belajar terasa ringan.</p>
+        <div class="hero-badges" aria-label="Highlight fitur">
+            <span>AI Coach lokal</span>
+            <span>Pomodoro 25/5</span>
+            <span>Mood-first study</span>
+        </div>
         <div class="hero-actions">
             <a class="button primary" href="#focusTimer">Start Focus Session</a>
             <a class="button" href="study-plan.php">Plan My Study</a>
@@ -29,6 +34,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <div class="buddy-hero" aria-hidden="true">
         <div class="buddy-sparkle">&#10022;</div>
+        <div class="hero-sticker sticker-top">no panic mode</div>
         <div class="buddy-head">
             <span></span>
             <span></span>
@@ -37,7 +43,32 @@ require_once __DIR__ . '/includes/header.php';
             <span>AI</span>
             <span>Study</span>
         </div>
+        <div class="hero-sticker sticker-bottom"><?= $pendingTodos; ?> tasks left</div>
     </div>
+</section>
+
+<section class="studio-strip" aria-label="Alur belajar StudyBuddy">
+    <article class="studio-panel">
+        <span class="panel-number">01</span>
+        <div>
+            <h3>Check the vibe</h3>
+            <p>Mulai dari mood dulu, bukan langsung gas kerja. Kamu tetap manusia, bukan mesin deadline.</p>
+        </div>
+    </article>
+    <article class="studio-panel">
+        <span class="panel-number">02</span>
+        <div>
+            <h3>Pick one tiny win</h3>
+            <p>StudyBuddy bantu milih langkah kecil yang cukup realistis buat dikerjakan sekarang.</p>
+        </div>
+    </article>
+    <article class="studio-panel">
+        <span class="panel-number">03</span>
+        <div>
+            <h3>Focus, then breathe</h3>
+            <p>Timer 25/5 bikin progress terasa hidup, tapi tetap ada ruang buat istirahat.</p>
+        </div>
+    </article>
 </section>
 
 <section class="stats-grid" aria-label="Ringkasan dashboard">
@@ -131,6 +162,31 @@ require_once __DIR__ . '/includes/header.php';
             <a class="text-link" href="schedule.php">Buat study plan manual</a>
         <?php endif; ?>
     </article>
+</section>
+
+<section class="feature-showcase">
+    <div class="showcase-copy">
+        <span class="eyebrow">Demo moment</span>
+        <h2>Satu app, tiga vibe belajar.</h2>
+        <p>Juri bisa langsung lihat StudyBuddy bukan cuma CRUD: ada companion chat, planner pintar lokal, dan ritual fokus yang nyaman buat mahasiswa.</p>
+    </div>
+    <div class="showcase-lanes">
+        <a href="ai-chat.php" class="showcase-lane lane-chat">
+            <span>&#128172;</span>
+            <strong>Curhat dulu</strong>
+            <small>Ngobrol santai, baru pelan-pelan cari langkah.</small>
+        </a>
+        <a href="study-plan.php" class="showcase-lane lane-plan">
+            <span>&#9889;</span>
+            <strong>Plan it</strong>
+            <small>Deadline dan energi dibaca jadi rencana belajar.</small>
+        </a>
+        <a href="#focusTimer" class="showcase-lane lane-focus">
+            <span>&#9201;</span>
+            <strong>Focus mode</strong>
+            <small>25 menit cukup buat tiny win hari ini.</small>
+        </a>
+    </div>
 </section>
 
 <section class="card about-card">

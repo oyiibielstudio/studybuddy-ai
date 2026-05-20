@@ -57,6 +57,19 @@ require_once __DIR__ . '/includes/header.php';
     <p>StudyBuddy AI bukan pengganti layanan konseling profesional. Aplikasi ini hanya memberikan dukungan ringan untuk membantu mahasiswa belajar lebih terarah.</p>
 </section>
 
+<section class="ai-coach-strip">
+    <div>
+        <span class="eyebrow">AI Coach Mode</span>
+        <h2>Kasih konteks, StudyBuddy bikin langkahnya.</h2>
+    </div>
+    <div class="coach-signals" aria-label="Kemampuan AI lokal">
+        <span>Deteksi deadline</span>
+        <span>Energi belajar</span>
+        <span>Prioritas tugas</span>
+        <span>Plan 25 menit</span>
+    </div>
+</section>
+
 <section class="page-grid">
     <article class="card form-card">
         <span class="eyebrow">Curhat ringan</span>
@@ -69,13 +82,13 @@ require_once __DIR__ . '/includes/header.php';
         <form method="post" class="stack-form" novalidate>
             <input type="hidden" name="action" value="add">
             <label for="message">Pesan kamu</label>
-            <textarea id="message" name="message" rows="7" placeholder="Contoh: Aku capek karena tugas numpuk dan bingung mulai dari mana." required></textarea>
+            <textarea id="message" name="message" rows="7" placeholder="Contoh: Aku punya tugas web deadline besok, database 3 hari lagi, dan aku capek banget." required></textarea>
 
             <div class="prompt-chips" aria-label="Contoh curhat cepat">
-                <button type="button" data-fill-message="Aku cape banget sama skripsi aku">Cape skripsi</button>
-                <button type="button" data-fill-message="Tugas numpuk dan deadline makin dekat">Deadline numpuk</button>
-                <button type="button" data-fill-message="Aku ga tau harus mulai dari mana">Ga tau mulai</button>
-                <button type="button" data-fill-message="Hari ini aku semangat banget">Lagi semangat</button>
+                <button type="button" data-fill-message="Aku cape banget sama skripsi aku, revisi bab 3 belum selesai dan bimbingan minggu ini.">Cape skripsi</button>
+                <button type="button" data-fill-message="Tugas web deadline besok, tugas database 3 hari lagi, dan aku lagi capek.">Deadline numpuk</button>
+                <button type="button" data-fill-message="Aku ga tau harus mulai dari mana, tugas laporan numpuk dan deadline dekat.">Ga tau mulai</button>
+                <button type="button" data-fill-message="Hari ini aku semangat banget, mau nyicil presentasi dan latihan 25 menit.">Lagi semangat</button>
             </div>
 
             <button class="button primary" type="submit">Kirim ke StudyBuddy</button>

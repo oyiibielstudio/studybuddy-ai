@@ -56,8 +56,13 @@ require_once __DIR__ . '/includes/header.php';
 <section class="hero-panel planner-hero">
     <div>
         <span class="eyebrow">Smart Study Plan Generator</span>
-        <h2>Drop your chaos, get a study plan.</h2>
-        <p>Tulis tugas, deadline, dan kondisi energimu. StudyBuddy akan bikin rencana belajar singkat yang terasa seperti AI companion, tetap aman dan rule-based.</p>
+        <h2>Drop your chaos, get a calm plan.</h2>
+        <p>Tulis tugas, deadline, dan kondisi energimu. StudyBuddy akan bikin rencana belajar yang pintar, tapi tetap manusiawi dan tidak maksa.</p>
+        <div class="hero-badges" aria-label="Sinyal yang dibaca StudyBuddy">
+            <span>deadline</span>
+            <span>energy level</span>
+            <span>tiny win</span>
+        </div>
         <div class="hero-actions">
             <a class="button primary" href="#planForm">Plan My Study</a>
             <a class="button" href="index.php#focusTimer">Start Focus Session</a>

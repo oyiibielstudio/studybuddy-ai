@@ -33,6 +33,15 @@ $latestMood = $moods[0] ?? null;
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<section class="page-intro intro-mood">
+    <div>
+        <span class="eyebrow">Mood-first learning</span>
+        <h2>Cek rasa dulu, baru atur langkah.</h2>
+        <p>Belajar lebih enak kalau kamu tidak mengabaikan kondisi diri. Pilih mood, tulis catatan singkat, lalu ambil ritme yang paling masuk akal.</p>
+    </div>
+    <div class="intro-emoji"><?= moodEmoji($latestMood['mood'] ?? null); ?></div>
+</section>
+
 <section class="page-grid">
     <article class="card form-card">
         <span class="eyebrow">Check-in Mood</span>

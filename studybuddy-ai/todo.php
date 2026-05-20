@@ -66,6 +66,18 @@ $todoProgress = count($todos) > 0 ? (int) round(($doneCount / count($todos)) * 1
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<section class="page-intro intro-todo">
+    <div>
+        <span class="eyebrow">Task Flow</span>
+        <h2>Bikin tugas terlihat lebih kecil.</h2>
+        <p>Catat dulu, baru rapikan. StudyBuddy bantu kamu melihat mana yang pending, done, dan urgent tanpa bikin kepala makin penuh.</p>
+    </div>
+    <div class="intro-meter">
+        <strong><?= $todoProgress; ?>%</strong>
+        <span>progress tugas</span>
+    </div>
+</section>
+
 <section class="page-grid">
     <article class="card form-card">
         <span class="eyebrow">Tambah Tugas</span>

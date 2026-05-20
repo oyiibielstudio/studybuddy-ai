@@ -48,6 +48,18 @@ $schedules = $stmt->fetchAll();
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<section class="page-intro intro-schedule">
+    <div>
+        <span class="eyebrow">Manual Study Plan</span>
+        <h2>Susun sesi belajar yang realistis.</h2>
+        <p>Kalau Smart Plan terasa terlalu otomatis, halaman ini jadi papan agenda manual buat topik, waktu, dan target kecil.</p>
+    </div>
+    <div class="intro-meter">
+        <strong><?= count($schedules); ?></strong>
+        <span>sesi tersimpan</span>
+    </div>
+</section>
+
 <section class="page-grid">
     <article class="card form-card">
         <span class="eyebrow">Manual Plan</span>

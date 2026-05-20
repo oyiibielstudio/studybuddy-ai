@@ -54,52 +54,270 @@ function generateAIResponse(string $message): string
 
     $text = normalizeMessage($text);
 
-    // Rule-based response dibuat akrab dengan bahasa chat mahasiswa dan tetap tanpa diagnosis.
+    $smallTalk = generateSmallTalkResponse($text);
+
+    if ($smallTalk !== null) {
+        return $smallTalk;
+    }
+
+    if (isVeryVagueMessage($text)) {
+        return implode("\n", [
+            'Hehe aku nangkep, tapi ceritamu masih tipis banget.',
+            'Coba cerita santai aja: lagi kepikiran tugas apa, deadline kapan, atau badan lagi capek/semangat?',
+            'Aku bakal bantu pecah jadi langkah kecil yang enak dikerjain.',
+        ]);
+    }
+
+    $insight = analyzeStudyMessage($text);
+
+    return composeAIResponse($insight);
+}
+
+function generateSmallTalkResponse(string $text): ?string
+{
+    $cleanText = trim(preg_replace('/[^\p{L}\p{N}\s]+/u', '', $text) ?? $text);
+
+    if (preg_match('/^(assalamualaikum|salam)$/u', $cleanText)) {
+        return 'Waalaikumsalam. Halo, aku di sini. Lagi mau ngobrol santai dulu atau langsung bahas tugas yang lagi kepikiran?';
+    }
+
+    if (preg_match('/^(halo|hai|hei|hello|hi|helo|pagi|siang|sore|malam)(\s+(kak|buddy|studybuddy))?$/u', $cleanText)) {
+        return implode("\n", [
+            'Halo juga. Aku di sini, santai aja.',
+            'Kamu nggak harus langsung produktif kok. Mau mulai dari ngobrol ringan juga boleh.',
+            'Kalau mau, pilih vibe yang paling cocok:',
+            '- "aku mau mulai tugas" kalau pengin ditemenin ngerapihin tugas',
+            '- "aku mau cek mood" kalau pengin cerita perasaan dulu',
+            '- "aku mau bikin rencana belajar" kalau pengin dibantu pelan-pelan',
+        ]);
+    }
+
     if (
-        containsAny($text, ['skripsi', 'tesis', 'revisi', 'dosen pembimbing', 'bimbingan', 'sidang'])
-        && containsAny($text, ['capek', 'cape', 'capai', 'lelah', 'burnout', 'tepar', 'drop'])
+        (preg_match('/^[wk]+$/u', $cleanText) && str_contains($cleanText, 'wk'))
+        || preg_match('/^((ha)+|(he)+|(hi)+)$/u', $cleanText)
     ) {
-        return 'Aduh, capek sama skripsi itu valid banget. Ambil jeda 10 menit dulu, lalu balik dengan target kecil: buka dokumen, pilih 1 bagian revisi, dan kerjakan 25 menit saja. Kamu tidak perlu menaklukkan semuanya sekali duduk.';
+        return 'Wkwk iya, santai dulu. Kalau udah siap, ceritain aja satu hal yang lagi paling ganggu fokusmu.';
     }
 
-    if (containsAny($text, ['skripsi', 'tesis', 'revisi', 'dosen pembimbing', 'bimbingan', 'sidang'])) {
-        return 'Skripsi memang bisa terasa berat, apalagi kalau kepikiran terus. Coba pilih satu target mini dulu: buka file terakhir, tulis 3 poin yang mau direvisi, lalu kerjakan 25 menit. Fokusnya bukan selesai semua hari ini, tapi bikin satu langkah nyata.';
+    if (preg_match('/\b(makasih|terima kasih|thanks|thank you|thx)\b/u', $cleanText)) {
+        return 'Sama-sama. Pelan-pelan aja ya, progress kecil tetap progress. Kalau mau, kita bisa lanjut susun langkah berikutnya.';
     }
 
-    if (containsAny($text, ['capek', 'cape', 'capai', 'lelah', 'burnout', 'tepar', 'drop'])) {
-        return 'Wajar kalau kamu merasa capek. Ambil jeda 10-15 menit dulu, minum air, jauhkan layar sebentar, lalu balik dengan target paling kecil. Belajar tetap jalan meski pelan.';
+    if (preg_match('/^(oke|ok|siap|sip|gas|gaskeun)(\s+(deh|ya|yuk|aja))?$/u', $cleanText)) {
+        return 'Siap, pelan-pelan aja. Kamu mau ditemenin ngobrol dulu, atau mau aku bantu pilih satu langkah kecil yang paling ringan?';
     }
 
-    if (containsAny($text, ['tugas', 'deadline', 'numpuk'])) {
-        return 'Kalau tugas terasa numpuk, jangan dilihat sebagai satu gunung besar. Urutkan deadline terdekat, pecah jadi langkah kecil, lalu mulai dari bagian pertama yang bisa selesai dalam 25 menit.';
+    if (containsPhrase($cleanText, ['mau mulai tugas', 'mulai tugas', 'ngerjain tugas', 'kerjain tugas'])) {
+        return implode("\n", [
+            'Oke, kita mulai tugasnya tanpa mode panik ya.',
+            'Ceritain tugasnya apa dan deadline kapan. Kalau belum tahu mulai dari mana, cukup tulis seadanya.',
+            'Nanti aku bantu pilih langkah pertama yang paling ringan, bukan langsung nyuruh kamu beresin semuanya.',
+        ]);
     }
 
-    if (containsAny($text, ['stres', 'tertekan'])) {
-        return 'Aku dengar kamu lagi merasa berat. Tarik napas pelan beberapa kali, kasih diri kamu jeda sebentar, lalu mulai dari satu langkah kecil yang paling mungkin dilakukan sekarang.';
+    if (containsPhrase($cleanText, ['cek mood', 'mau cek mood', 'cerita mood', 'mood dulu'])) {
+        return implode("\n", [
+            'Boleh banget, kita cek mood dulu.',
+            'Hari ini rasanya lebih dekat ke mana: senang, biasa aja, lelah, stres, atau sedih?',
+            'Nggak perlu dijelasin rapi. Cerita berantakan juga gapapa.',
+        ]);
     }
 
-    if (containsAny($text, ['malas', 'bingung', 'gatau', 'ga tau', 'nggak tau', 'tidak tau', 'tidak tahu', 'mulai dari mana'])) {
-        return 'Kalau lagi bingung, mulai dari target super kecil dulu. Tulis 1 hal yang harus dibereskan, buka materinya, lalu timer 10-25 menit. Setelah mulai, biasanya arahnya lebih kebaca.';
+    if (containsPhrase($cleanText, ['bikin rencana belajar', 'buat rencana belajar', 'mau rencana belajar', 'study plan'])) {
+        return implode("\n", [
+            'Siap, kita bikin rencana belajar yang manusiawi.',
+            'Kirim aja 3 hal: tugas/topik, deadline, dan energi kamu sekarang.',
+            'Contoh santai: "web besok, database 3 hari lagi, aku capek". Nanti aku pecah jadi langkah kecil.',
+        ]);
+    }
+
+    return null;
+}
+
+function containsPhrase(string $text, array $phrases): bool
+{
+    foreach ($phrases as $phrase) {
+        if (str_contains($text, $phrase)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function isVeryVagueMessage(string $text): bool
+{
+    $wordCount = str_word_count($text);
+    $hasStudySignal = containsAny($text, [
+        'tugas',
+        'deadline',
+        'skripsi',
+        'belajar',
+        'ujian',
+        'uts',
+        'uas',
+        'web',
+        'database',
+        'laporan',
+        'presentasi',
+        'capek',
+        'cape',
+        'bingung',
+        'stres',
+    ]);
+
+    return $wordCount <= 3 && !$hasStudySignal;
+}
+
+function analyzeStudyMessage(string $text): array
+{
+    $mainTask = detectMainStudyTask($text);
+    $secondTask = detectSecondaryStudyTask($text, $mainTask);
+
+    return [
+        'main_task' => $mainTask,
+        'second_task' => $secondTask,
+        'deadline' => detectDeadlineLabel($text),
+        'energy' => detectEnergyLevel($text),
+        'tone' => detectUserTone($text),
+        'workload' => containsAny($text, ['numpuk', 'banyak', 'keteteran', 'overload', 'semua', 'beberapa']) ? 'banyak' : 'normal',
+        'confused' => containsAny($text, ['bingung', 'gatau', 'ga tau', 'nggak tau', 'tidak tau', 'tidak tahu', 'mulai dari mana', 'apa ya']),
+        'positive' => containsAny($text, ['semangat', 'senang', 'happy', 'lega', 'bangga', 'mantap']),
+        'is_skripsi' => containsAny($text, ['skripsi', 'tesis', 'revisi', 'dosen pembimbing', 'bimbingan', 'sidang']),
+        'is_deadline' => containsAny($text, ['deadline', 'besok', 'hari ini', 'malam ini', 'mepet', 'dekat', '3 hari', '2 hari', 'minggu ini']),
+    ];
+}
+
+function composeAIResponse(array $insight): string
+{
+    $mainTask = $insight['main_task'];
+    $secondTask = $insight['second_task'];
+    $deadline = $insight['deadline'];
+    $energy = $insight['energy'];
+
+    $opening = match ($insight['tone']) {
+        'berat' => 'Aku nangkep ini lagi berat buat kamu, dan kamu tidak harus membereskan semuanya sekaligus.',
+        'bingung' => 'Aku nangkep kamu lagi belum nemu titik mulai. Kita bikin jadi lebih kecil dan jelas.',
+        'positif' => 'Wih, energinya lagi bagus. Kita pakai momentumnya biar jadi progress nyata.',
+        default => 'Aku nangkep ceritamu. Kita ubah jadi langkah belajar yang bisa langsung dijalankan.',
+    };
+
+    $context = "Yang kebaca: fokus utama = {$mainTask}; deadline = {$deadline}; energi = {$energy}.";
+
+    if ($insight['is_skripsi'] && $energy === 'rendah') {
+        $priority = 'Prioritasnya bukan ngebut skripsi sampai habis, tapi buka dokumen dan pilih 1 bagian revisi paling kecil.';
+    } elseif ($insight['is_deadline']) {
+        $priority = "Prioritasnya: kerjakan {$mainTask} dulu karena sinyal deadline-nya paling kuat.";
+    } elseif ($insight['confused']) {
+        $priority = "Prioritasnya: bikin titik mulai. Jangan mikir semua bagian, cukup mulai dari 1 langkah paling jelas.";
+    } else {
+        $priority = "Prioritasnya: mulai dari {$mainTask}, lalu jaga ritme supaya tidak keburu mental penuh.";
+    }
+
+    $plan = $energy === 'rendah'
+        ? [
+            '1. 3 menit: rapikan meja/tab, buka file atau instruksi tugas.',
+            "2. 15 menit: kerjakan bagian termudah dari {$mainTask}.",
+            '3. 5 menit: istirahat beneran, minum air, jangan buka tugas baru.',
+            '4. 10 menit: lanjutkan sedikit atau tulis next step untuk sesi berikutnya.',
+        ]
+        : [
+            '1. 5 menit: tulis daftar bagian yang harus dikerjakan.',
+            "2. 25 menit: fokus ke {$mainTask} tanpa pindah tab.",
+            '3. 5 menit: break singkat.',
+            '4. 25 menit: lanjutkan bagian berikutnya atau revisi hasil sesi pertama.',
+        ];
+
+    if ($secondTask) {
+        $plan[] = "Bonus kalau masih ada tenaga: sentuh {$secondTask} selama 10 menit dari bagian paling gampang.";
+    }
+
+    $tinyWin = $insight['positive']
+        ? 'Tiny win: selesaikan 1 bagian penting lalu kasih reward kecil. Momentum kayak gini sayang kalau cuma lewat.'
+        : 'Tiny win: setelah 10 menit, cukup tanya "lanjut 10 menit lagi atau break dulu?" Bukan harus sempurna, yang penting bergerak.';
+
+    $safety = 'Catatan kecil: aku bantu dukungan belajar ringan ya, bukan diagnosis atau instruksi medis.';
+
+    return implode("\n", array_merge([
+        "StudyBuddy Says:",
+        $opening,
+        $context,
+        $priority,
+        '',
+        'Rencana paling masuk akal sekarang:',
+    ], $plan, [
+        '',
+        $tinyWin,
+        $safety,
+    ]));
+}
+
+function detectDeadlineLabel(string $text): string
+{
+    if (containsAny($text, ['hari ini', 'malam ini'])) {
+        return 'hari ini';
+    }
+
+    if (str_contains($text, 'besok')) {
+        return 'besok';
+    }
+
+    if (preg_match('/(\d+)\s*hari\s+lagi/u', $text, $match)) {
+        return $match[1] . ' hari lagi';
+    }
+
+    if (containsAny($text, ['minggu ini', 'pekan ini'])) {
+        return 'minggu ini';
+    }
+
+    if (containsAny($text, ['deadline', 'mepet', 'dekat'])) {
+        return 'dekat';
+    }
+
+    return 'belum jelas';
+}
+
+function detectEnergyLevel(string $text): string
+{
+    if (containsAny($text, ['capek', 'cape', 'capai', 'lelah', 'burnout', 'tepar', 'drop', 'ngantuk'])) {
+        return 'rendah';
+    }
+
+    if (containsAny($text, ['semangat', 'fresh', 'siap', 'happy', 'senang'])) {
+        return 'bagus';
+    }
+
+    return 'sedang';
+}
+
+function detectUserTone(string $text): string
+{
+    if (containsAny($text, ['stres', 'tertekan', 'panik', 'takut', 'cemas', 'overthinking', 'capek', 'cape', 'lelah'])) {
+        return 'berat';
+    }
+
+    if (containsAny($text, ['bingung', 'gatau', 'ga tau', 'nggak tau', 'tidak tahu', 'mulai dari mana', 'apa ya'])) {
+        return 'bingung';
     }
 
     if (containsAny($text, ['semangat', 'senang', 'happy', 'lega', 'bangga'])) {
-        return 'Love that energy. Pakai momentum ini buat menyelesaikan satu prioritas utama, lalu kasih apresiasi kecil ke diri sendiri. Progress kecil tetap valid.';
+        return 'positif';
     }
 
-    return 'Makasih sudah cerita. Coba pilih satu hal yang paling mengganggu pikiranmu sekarang, lalu ubah jadi langkah kecil yang bisa dikerjakan 10 menit. Aku bantu kamu tetap pelan tapi terarah.';
+    return 'netral';
 }
 
 function normalizeMessage(string $text): string
 {
-    $replacements = [
-        'ngga' => 'nggak',
-        'gak' => 'ga',
-        'enggak' => 'nggak',
-        'capee' => 'cape',
-        'capekk' => 'capek',
+    $patterns = [
+        '/\bngga\b/u' => 'nggak',
+        '/\benggak\b/u' => 'nggak',
+        '/\bgak\b/u' => 'ga',
+        '/\bcapee+\b/u' => 'cape',
+        '/\bcapekk+\b/u' => 'capek',
     ];
 
-    return str_replace(array_keys($replacements), array_values($replacements), $text);
+    return preg_replace(array_keys($patterns), array_values($patterns), $text) ?? $text;
 }
 
 function generateStudyPlan(string $input): string
@@ -145,8 +363,8 @@ function generateStudyPlan(string $input): string
 
 function detectMainStudyTask(string $text): string
 {
-    if (preg_match('/tugas\s+([a-z0-9 ]+?)(?:\s+deadline|\s+\d+\s+hari|,|\.| dan aku| dan saya|$)/u', $text, $match)) {
-        return 'tugas ' . trim($match[1]);
+    if (preg_match('/tugas\s+([a-z0-9 ]+?)(?:\s+numpuk|\s+banyak|\s+deadline|\s+\d+\s+hari|,|\.| dan aku| dan saya|$)/u', $text, $match)) {
+        return 'tugas ' . cleanTaskLabel($match[1]);
     }
 
     $topicMap = [
@@ -169,10 +387,10 @@ function detectMainStudyTask(string $text): string
 
 function detectSecondaryStudyTask(string $text, string $mainTask): ?string
 {
-    preg_match_all('/tugas\s+([a-z0-9 ]+?)(?:\s+deadline|\s+\d+\s+hari|,|\.| dan aku| dan saya|$)/u', $text, $matches);
+    preg_match_all('/tugas\s+([a-z0-9 ]+?)(?:\s+numpuk|\s+banyak|\s+deadline|\s+\d+\s+hari|,|\.| dan aku| dan saya|$)/u', $text, $matches);
 
     foreach ($matches[1] ?? [] as $task) {
-        $label = 'tugas ' . trim($task);
+        $label = 'tugas ' . cleanTaskLabel($task);
 
         if ($label !== $mainTask) {
             return $label;
@@ -188,6 +406,15 @@ function detectSecondaryStudyTask(string $text, string $mainTask): ?string
     }
 
     return null;
+}
+
+function cleanTaskLabel(string $task): string
+{
+    $task = trim($task);
+    $task = preg_replace('/\b(numpuk|banyak|mepet|dekat|lagi|dan)\b/u', '', $task) ?? $task;
+    $task = trim(preg_replace('/\s+/u', ' ', $task) ?? $task);
+
+    return $task !== '' ? $task : 'paling dekat deadline-nya';
 }
 
 function containsAny(string $text, array $keywords): bool

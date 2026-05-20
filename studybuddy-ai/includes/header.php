@@ -11,7 +11,7 @@ $pageTitle = $pageTitle ?? 'StudyBuddy AI';
     <title><?= e($pageTitle); ?> - StudyBuddy AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body class="page-<?= e(str_replace('.php', '', currentPage())); ?>">
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
             <a class="brand" href="index.php" aria-label="StudyBuddy AI Dashboard">
@@ -42,6 +42,7 @@ $pageTitle = $pageTitle ?? 'StudyBuddy AI';
                     <span class="eyebrow">OYIIBIEL.studio</span>
                     <h1><?= e($pageTitle); ?></h1>
                 </div>
+                <span class="topbar-chip">Local AI mode</span>
             </header>
 
             <main class="main-content">

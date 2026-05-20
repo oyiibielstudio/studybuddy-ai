@@ -6,7 +6,7 @@ requestAnimationFrame(() => {
     document.body.classList.add('is-loaded');
 });
 
-document.querySelectorAll('.main-content > *, .card, .stat-card, .shortcut-card, .notice-card, .hero-panel, .dashboard-hero').forEach((item, index) => {
+document.querySelectorAll('.main-content > *, .card, .stat-card, .shortcut-card, .notice-card, .hero-panel, .dashboard-hero, .page-intro, .studio-panel, .showcase-lane').forEach((item, index) => {
     item.style.setProperty('--reveal-index', String(index));
 });
 
